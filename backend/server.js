@@ -19,7 +19,8 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/student_document_store', {
+mongoose.connect(process.env.MONGODB_URI, 
+ {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
