@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = '/api';
+const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 const api = axios.create({
   baseURL: API_URL,
@@ -117,7 +117,7 @@ export const uploadProfilePhoto = (formData) => {
 };
 
 export const getProfilePhoto = (studentId) => {
-  return `/api/profile/photo?t=${Date.now()}`;
+  return `${API_URL}/profile/photo?t=${Date.now()}`;
 };
 
 export default api;
