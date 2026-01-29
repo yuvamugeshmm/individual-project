@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://individual-project-yee4.onrender.com/api/$1"
+    }
+  ]
+}
