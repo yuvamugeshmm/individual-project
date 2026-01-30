@@ -15,10 +15,17 @@ app.use((req, res, next) => {
 });
 
 // Middleware
-app.use(helmet({
-  crossOriginResourcePolicy: false,
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "http://localhost:3000",
+    "https://individual-project-l844i689u-yuvamugeshmms-projects.vercel.app/"
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
 }));
-app.use(cors());
+
+app.options("*", cors());
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
