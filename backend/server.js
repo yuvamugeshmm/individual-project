@@ -18,20 +18,7 @@ app.use((req, res, next) => {
 app.use(helmet({
   crossOriginResourcePolicy: false,
 }));
-app.use(cors({
-  origin: [
-    process.env.FRONTEND_URL,
-    'https://individual-project.vercel.app',
-    'http://localhost:3000',
-    'http://127.0.0.1:3000',
-    'http://localhost:5173',
-    'http://127.0.0.1:5173'
-  ].filter(Boolean),
-
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
