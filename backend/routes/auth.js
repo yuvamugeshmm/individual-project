@@ -20,6 +20,7 @@ router.post('/login', [
   body('studentId').trim().notEmpty().withMessage('Student ID is required'),
   body('password').notEmpty().withMessage('Password is required')
 ], async (req, res) => {
+  console.log('Login route hit for ID:', req.body.studentId);
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

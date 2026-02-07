@@ -9,8 +9,7 @@ RUN npm install
 # Copy application source
 COPY . .
 
-# Expose the port Railway provides
-ENV PORT=10000
-EXPOSE 10000
+# Expose the port (Render/Railway will provide $PORT)
+EXPOSE 5001
 
 CMD ["node", "server.js"]

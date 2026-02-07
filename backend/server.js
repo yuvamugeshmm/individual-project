@@ -1,65 +1,73 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const cookieParser = require('cookie-parser');
-const cors = require('cors');
-const path = require('path');
-const helmet = require('helmet');
-require('dotenv').config();
+const express = require("express");
+const mongoose = require("mongoose");
+const cookieParser = require("cookie-parser");
+const cors = require("cors");
+const path = require("path");
+require("dotenv").config();
+
+// Import routes
+const authRoutes = require("./routes/auth");
+const documentRoutes = require("./routes/documents");
+const adminRoutes = require("./routes/admin");
+const profileRoutes = require("./routes/profile");
 
 const app = express();
 
-// Request Logging Middleware
-app.use((req, res, next) => {
-  console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
-  next();
-});
-
 // Middleware
-app.use(helmet({
-  crossOriginResourcePolicy: false,
-}));
-app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://individual-project-l844i689u-yuvamugeshmms-projects.vercel.app"
-  ],
-  credentials: true
-}));
-
-app.options("*", cors());
 app.use(express.json());
-app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
-// MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI,
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+// CORS configuration
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:5173",
+  "http://localhost:8080",
+  "http://localhost:8081",
+  process.env.FRONTEND_URL,
+].filter(Boolean);
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
   })
-  .then(() => console.log('MongoDB Connected'))
-  .catch(err => console.error('MongoDB connection error:', err));
+);
 
-// Serve uploaded files
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
-app.get("/", (req, res) => {
-  res.send("Backend is live successfully 🚀");
-});
-
-
-// Routes
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/documents', require('./routes/documents'));
-app.use('/api/admin', require('./routes/admin'));
-app.use('/api/profile', require('./routes/profile'));
+// Static files
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Health check
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', message: 'Server is running' });
+app.get("/api/health", (req, res) => {
+  res.json({ status: "ok", message: "Server is running" });
 });
 
-const PORT = process.env.PORT || 10000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+// Routes
+app.use("/api/auth", authRoutes);
+app.use("/api/documents", documentRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/profile", profileRoutes);
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: "Something went wrong!", details: err.message });
 });
+
+// Database Connection
+const connectDB = require("./config/db");
+
+// Connect to DB immediately if running locally/standalone
+if (require.main === module) {
+  connectDB().then(() => {
+    const PORT = process.env.PORT || 5001;
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+    });
+  }).catch(err => {
+    console.error("❌ MongoDB Connection Error:", err);
+  });
+}
+
+module.exports = app;
+

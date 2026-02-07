@@ -31,7 +31,7 @@ function Login({ onLogin }) {
       if (err.response) {
         setError(err.response.data?.error || err.response.data?.message || 'Login failed');
       } else if (err.request) {
-        setError('Cannot connect to server. Please make sure the backend is running on port 5001');
+        setError('Cannot connect to server. Please check your internet connection or try again later.');
       } else {
         setError(err.message || 'Login failed');
       }

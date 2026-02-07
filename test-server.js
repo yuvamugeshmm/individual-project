@@ -3,7 +3,7 @@ const http = require('http');
 
 const testBackend = () => {
   return new Promise((resolve, reject) => {
-    const req = http.get('http://localhost:5000/api/health', (res) => {
+    const req = http.get('http://localhost:5001/api/health', (res) => {
       let data = '';
       res.on('data', (chunk) => { data += chunk; });
       res.on('end', () => {

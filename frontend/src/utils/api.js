@@ -1,13 +1,12 @@
 import axios from 'axios';
 
-const API_URL = 'https://individual-project-1-a5b2.onrender.com/api';
-
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5001/api";
 const api = axios.create({
   baseURL: API_URL,
   withCredentials: true,
   headers: {
-    'Content-Type': 'application/json'
-  }
+    "Content-Type": "application/json",
+  },
 });
 
 // Auth APIs
@@ -117,7 +116,7 @@ export const uploadProfilePhoto = (formData) => {
 };
 
 export const getProfilePhoto = (studentId) => {
-  return `${API_URL}/profile/photo?t=${Date.now()}`;
+  return `${API_URL}/profile/photo/${studentId}?t=${Date.now()}`;
 };
 
 export default api;

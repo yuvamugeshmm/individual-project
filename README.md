@@ -262,18 +262,12 @@ Files are NOT publicly accessible. All file access requires:
 
 ## Production Deployment
 
-Before deploying to production:
+This project is optimized for deployment on **Render** or **Railway**.
 
-1. Change `JWT_SECRET` to a strong random string
-2. Set `NODE_ENV=production`
-3. Update `FRONTEND_URL` to your production frontend URL
-4. Use a production MongoDB instance (MongoDB Atlas recommended)
-5. Consider using cloud storage (AWS S3, etc.) instead of local storage
-6. Set up proper HTTPS
-7. Configure proper CORS origins
-8. Set up environment variables securely
-9. Use a process manager like PM2
-10. Set up proper logging and monitoring
+1. **Render (Blueprint)**: The project includes a `render.yaml` file. Simply connect your GitHub repo to Render and it will automatically configure both the backend and frontend.
+2. **Environment Variables**: See [DEPLOYMENT.md](DEPLOYMENT.md) for a full list of required variables (`MONGODB_URI`, `JWT_SECRET`, etc.).
+3. **Storage**: Files are currently stored locally. For production with multiple instances, consider integrating AWS S3 or similar.
+4. **Security**: Ensure `NODE_ENV` is set to `production` and provide a strong `JWT_SECRET`.
 
 ## License
 
